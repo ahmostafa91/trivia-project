@@ -227,9 +227,14 @@ def create_app(test_config=None):
     category = body.get('quiz_category')
 
     try:
-      questions = Question.query.filter_by(category=category['id']).all()
+      questions = {}
 
-      formatted_questions = [q.format() for q in questions]
+      if category['id'] == 0:
+        questions['questionList'] = Question.query.all()
+      else:
+        questions['questionList'] = Question.query.filter_by(category=category['id']).all()
+
+      formatted_questions = [q.format() for q in questions['questionList']]
 
       available_questions = []
 
